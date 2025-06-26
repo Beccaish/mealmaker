@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Maker from Cupboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        body.dark {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 428px;
+            margin: 0 auto;
+            min-height: 100vh;
+            background: #fff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        body.dark .container {
+            background: #2d2d2d;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #5D5CDE 0%, #FF6B6B 100%);
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .nav-tabs {
+            background: #fff;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            position: sticky;
+            top: 70px;
+            z-index: 90;
+        }
+
+        body.dark .nav-tabs {
+            background: #2d2d2d;
+            border-bottom-color: #444;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 1rem 0.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+
+        body.dark .tab-btn {
+            color: #ccc;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #5D5CDE, #FF6B6B);
+            color: white;
+        }
+
+        .tab-content {
+            padding: 1rem;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        body.dark .card {
+            background: #333;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        .input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background: #fff;
+            color: #333;
+        }
+
+        body.dark .input {
+            background: #444;
+            border-color: #555;
+            color: #fff;
+        }
+
+        .btn {
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .btn-primary {
+            background: #5D5CDE;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4a49c7;
+        }
+
+        .btn-success {
+            background: #4ECDC4;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #3bb8af;
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+
+        body.dark .btn-secondary {
+            background: #444;
+            color: #fff;
+            border-color: #555;
+        }
+
+        .ingredient-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: rgba(93, 92, 222, 0.1);
+            color: #5D5CDE;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            margin: 0.125rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ingredient-tag:hover {
+            background: rgba(93, 92, 222, 0.2);
+            transform: scale(1.05);
+        }
+
+        .meal-card {
+            background: linear-gradient(145deg, #ffffff, #f8f9fa);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid #f0f0f0;
+        }
+
+        body.dark .meal-card {
+            background: linear-gradient(145deg, #333, #2a2a2a);
+            border-color: #444;
+        }
+
+        .meal-card:hover {
+            box-shadow: 0 8px 25px rgba(93, 92, 222, 0.15);
+        }
+
+        .status-complete { color: #4ECDC4; }
+        .status-partial { color: #FFE66D; }
+        .status-missing { color: #ccc; }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #5D5CDE;
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(93, 92, 222, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 1rem;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 400px;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        body.dark .modal-content {
+            background: #333;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 0.5rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .mt-4 {
+            margin-top: 1rem;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+        }
+
+        .text-xl {
+            font-size: 1.25rem;
+        }
+
+        .font-bold {
+            font-weight: bold;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        .grid {
+            display: grid;
+        }
+
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #666;
+        }
+
+        body.dark .empty-state {
+            color: #ccc;
+        }
+
+        .toast {
+            position: fixed;
+            top: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4ECDC4;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            z-index: 3000;
+            animation: toastSlideIn 0.3s ease;
+        }
+
+        @keyframes toastSlideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .category-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #333;
+        }
+
+        body.dark .category-title {
+            color: #fff;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .radio, .checkbox {
+            width: 18px;
+            height: 18px;
+            accent-color: #5D5CDE;
+        }
+
+        select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #fff;
+            color: #333;
+            font-size: 0.875rem;
+        }
+
+        body.dark select {
+            background: #444;
+            border-color: #555;
+            color: #fff;
+        }
+
+        .ingredient-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+        }
+
+        .missing {
+            background: rgba(255, 107, 107, 0.1);
+            color: #FF6B6B;
+        }
+
+        .available {
+            background: rgba(78, 205, 196, 0.1);
+            color: #4ECDC4;
+        }
+
+        .budget-bar {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        body.dark .budget-bar {
+            background: #444;
+        }
+
+        .budget-fill {
+            height: 100%;
+            background: #5D5CDE;
+            transition: width 0.3s ease;
+        }
+
+        .shopping-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .shopping-item:hover {
+            background: #f8f9fa;
+        }
+
+        body.dark .shopping-item:hover {
+            background: #444;
+        }
+
+        .day-planner {
+            background: #fff;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        body.dark .day-planner {
+            background: #333;
+        }
+
+        .meal-selects {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <span>🍳</span>
+                    <span>Meal Maker</span>
+                </div>
+                <button id="darkModeBtn" class="btn btn-secondary" style="padding: 0.5rem;">🌙</button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="cupboard">
+                📦 Cupboard
+            </button>
+            <button class="tab-btn" data-tab="meals">
+                🍽️ Meals
+            </button>
+            <button class="tab-btn" data-tab="planner">
+                📅 Planner
+            </button>
+            <button class="tab-btn" data-tab="list">
+                🛒 List
+            </button>
+        </nav>
+
+        <!-- Cupboard Tab -->
+        <div id="cupboard-tab" class="tab-content active">
+            <h2 class="text-xl font-bold mb-2">My Cupboard</h2>
+            <p class="text-sm mb-4" style="color: #666;">Add ingredients you have at home</p>
+
+            <div class="card">
+                <div class="flex gap-2 mb-4">
+                    <input type="text" id="ingredientInput" placeholder="Add ingredient..." class="input" style="flex: 1;">
+                    <button id="addIngredientBtn" class="btn btn-primary">+</button>
+                </div>
+                <select id="categorySelect" class="input">
+                    <option value="grains">Grains & Starches</option>
+                    <option value="canned">Canned Goods</option>
+                    <option value="vegetables">Vegetables</option>
+                    <option value="meat">Meat & Protein</option>
+                    <option value="dairy">Dairy</option>
+                    <option value="condiments">Condiments & Spices</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div id="ingredientCategories"></div>
+        </div>
+
+        <!-- Meals Tab -->
+        <div id="meals-tab" class="tab-content">
+            <h2 class="text-xl font-bold mb-2">What Can I Make?</h2>
+            <p class="text-sm mb-4" style="color: #666;">Delicious meals from your cupboard</p>
+
+            <div class="card">
+                <h3 class="font-semibold mb-4">Filters</h3>
+                <div class="filter-grid">
+                    <label class="filter-option">
+                        <input type="radio" name="meatFilter" value="both" checked class="radio">
+                        <span>All meals</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="meatFilter" value="meat" class="radio">
+                        <span>Meat only</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="radio" name="meatFilter" value="nomeat" class="radio">
+                        <span>No meat</span>
+                    </label>
+                    <label class="filter-option">
+                        <input type="checkbox" id="microwaveOnly" class="checkbox">
+                        <span>Microwave only</span>
+                    </label>
+                </div>
+                <button id="searchMealsBtn" class="btn btn-primary w-full">🔍 Find Meals</button>
+            </div>
+
+            <div id="mealResults"></div>
+        </div>
+
+        <!-- Planner Tab -->
+        <div id="planner-tab" class="tab-content">
+            <h2 class="text-xl font-bold mb-2">Weekly Planner</h2>
+            <p class="text-sm mb-4" style="color: #666;">Plan your meals for the week</p>
+
+            <div class="card">
+                <label class="text-sm font-semibold mb-2" style="display: block;">Weekly Budget (R)</label>
+                <input type="number" id="budgetInput" placeholder="200" value="200" class="input">
+            </div>
+
+            <div id="weeklyCalendar"></div>
+
+            <button id="generateListBtn" class="btn btn-success w-full">📝 Generate Shopping List</button>
+        </div>
+
+        <!-- Shopping List Tab -->
+        <div id="list-tab" class="tab-content">
+            <h2 class="text-xl font-bold mb-2">Shopping List</h2>
+            <p class="text-sm mb-4" style="color: #666;">Items you need to buy</p>
+
+            <div id="shoppingListContent">
+                <div class="empty-state">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">🛒</div>
+                    <p>Generate a shopping list from your meal planner</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <button id="quickSearchBtn" class="floating-btn">⚡</button>
+
+        <!-- Quick Search Modal -->
+        <div id="quickSearchModal" class="modal">
+            <div class="modal-content">
+                <h3 class="text-lg font-bold mb-4">Quick Search</h3>
+                <p class="mb-4" style="color: #666;">What can I make right now?</p>
+                <div id="quickResults" class="mb-4"></div>
+                <button id="closeQuickSearch" class="btn btn-secondary w-full">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode setup
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.classList.add('dark');
+        }
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            if (event.matches) {
+                document.body.classList.add('dark');
+            } else {
+                document.body.classList.remove('dark');
+            }
+        });
+
+        // Dark mode toggle
+        document.getElementById('darkModeBtn').addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+        });
+
+        // App Data
+        let cupboard = JSON.parse(localStorage.getItem('cupboard')) || {
+            grains: [],
+            canned: [],
+            vegetables: [],
+            meat: [],
+            dairy: [],
+            condiments: [],
+            other: []
+        };
+
+        let weeklyPlan = JSON.parse(localStorage.getItem('weeklyPlan')) || {};
+
+        // Predefined meals
+        const meals = [
+            {
+                name: "Pap + Chakalaka",
+                ingredients: ["pap", "chakalaka"],
+                tags: ["vegan", "cheap"],
+                cost: 15,
+                cooking: "stove"
+            },
+            {
+                name: "Samp & Beans",
+                ingredients: ["samp", "beans", "onion"],
+                tags: ["vegan", "protein"],
+                cost: 20,
+                cooking: "stove"
+            },
+            {
+                name: "Pancakes",
+                ingredients: ["flour", "eggs", "milk", "oil"],
+                tags: ["sweet", "cheap"],
+                cost: 18,
+                cooking: "stove"
+            },
+            {
+                name: "Mac & Cheese & Viennas",
+                ingredients: ["macaroni", "cheese sauce", "viennas"],
+                tags: ["meat", "easy"],
+                cost: 25,
+                cooking: "stove"
+            },
+            {
+                name: "Canned Soup + Bread",
+                ingredients: ["soup can", "bread"],
+                tags: ["quick", "no cook"],
+                cost: 12,
+                cooking: "microwave"
+            },
+            {
+                name: "Canned Veg Stir-fry",
+                ingredients: ["mixed veg", "oil", "garlic"],
+                tags: ["vegan"],
+                cost: 16,
+                cooking: "stove"
+            },
+            {
+                name: "Rice + Curry Veg Can",
+                ingredients: ["rice", "canned curry veg"],
+                tags: ["vegan", "easy"],
+                cost: 14,
+                cooking: "stove"
+            },
+            {
+                name: "Toasted Sandwiches",
+                ingredients: ["bread", "cheese"],
+                tags: ["quick"],
+                cost: 10,
+                cooking: "microwave"
+            },
+            {
+                name: "Egg Fried Rice",
+                ingredients: ["rice", "egg", "onion"],
+                tags: ["vegetarian", "1-pan"],
+                cost: 16,
+                cooking: "stove"
+            },
+            {
+                name: "Instant Noodles",
+                ingredients: ["instant noodles"],
+                tags: ["quick", "cheap"],
+                cost: 8,
+                cooking: "microwave"
+            }
+        ];
+
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('cupboard', JSON.stringify(cupboard));
+            localStorage.setItem('weeklyPlan', JSON.stringify(weeklyPlan));
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const tabName = btn.dataset.tab;
+                
+                // Update tab buttons
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Update tab content
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+                
+                // Refresh content if needed
+                if (tabName === 'cupboard') renderCupboard();
+                if (tabName === 'planner') renderWeeklyPlanner();
+            });
+        });
+
+        // Add ingredient
+        document.getElementById('addIngredientBtn').addEventListener('click', addIngredient);
+        document.getElementById('ingredientInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addIngredient();
+        });
+
+        function addIngredient() {
+            const input = document.getElementById('ingredientInput');
+            const category = document.getElementById('categorySelect').value;
+            const ingredient = input.value.trim().toLowerCase();
+            
+            if (ingredient && !cupboard[category].includes(ingredient)) {
+                cupboard[category].push(ingredient);
+                input.value = '';
+                saveData();
+                renderCupboard();
+            }
+        }
+
+        // Render cupboard
+        function renderCupboard() {
+            const container = document.getElementById('ingredientCategories');
+            container.innerHTML = '';
+
+            Object.entries(cupboard).forEach(([category, items]) => {
+                if (items.length > 0) {
+                    const categoryDiv = document.createElement('div');
+                    categoryDiv.className = 'card';
+                    
+                    const categoryName = category.charAt(0).toUpperCase() + category.slice(1).replace(/([A-Z])/g, ' $1');
+                    
+                    categoryDiv.innerHTML = `
+                        <div class="category-title">
+                            <span>🏷️</span>
+                            <span>${categoryName}</span>
+                        </div>
+                        <div class="ingredient-list">
+                            ${items.map(item => `
+                                <span class="ingredient-tag" onclick="removeIngredient('${category}', '${item}')">
+                                    ${item}
+                                    <span>×</span>
+                                </span>
+                            `).join('')}
+                        </div>
+                    `;
+                    
+                    container.appendChild(categoryDiv);
+                }
+            });
+        }
+
+        // Remove ingredient
+        function removeIngredient(category, item) {
+            cupboard[category] = cupboard[category].filter(i => i !== item);
+            saveData();
+            renderCupboard();
+        }
+
+        // Search meals
+        document.getElementById('searchMealsBtn').addEventListener('click', searchMeals);
+
+        function searchMeals() {
+            const meatFilter = document.querySelector('input[name="meatFilter"]:checked').value;
+            const microwaveOnly = document.getElementById('microwaveOnly').checked;
+            
+            const allIngredients = Object.values(cupboard).flat();
+            const results = [];
+
+            meals.forEach(meal => {
+                // Filter by meat preference
+                if (meatFilter === 'meat' && !meal.tags.includes('meat')) return;
+                if (meatFilter === 'nomeat' && meal.tags.includes('meat')) return;
+                
+                // Filter by cooking method
+                if (microwaveOnly && meal.cooking !== 'microwave') return;
+
+                const availableIngredients = meal.ingredients.filter(ing => 
+                    allIngredients.some(userIng => userIng.includes(ing.toLowerCase()) || ing.toLowerCase().includes(userIng))
+                );
+                
+                const completeness = availableIngredients.length / meal.ingredients.length;
+                
+                if (completeness > 0) {
+                    results.push({
+                        ...meal,
+                        completeness,
+                        missing: meal.ingredients.filter(ing => 
+                            !allIngredients.some(userIng => userIng.includes(ing.toLowerCase()) || ing.toLowerCase().includes(userIng))
+                        )
+                    });
+                }
+            });
+
+            results.sort((a, b) => b.completeness - a.completeness);
+            renderMealResults(results);
+        }
+
+        // Render meal results
+        function renderMealResults(results) {
+            const container = document.getElementById('mealResults');
+            
+            if (results.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🍳</div>
+                        <p>No meals found. Try adding more ingredients!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = results.map(meal => {
+                const statusIcon = meal.completeness === 1 ? '✅' : 
+                                 meal.completeness >= 0.7 ? '🟡' : '❌';
+                const statusClass = meal.completeness === 1 ? 'status-complete' : 
+                                  meal.completeness >= 0.7 ? 'status-partial' : 'status-missing';
+                
+                return `
+                    <div class="meal-card">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-semibold">${meal.name}</h3>
+                            <div class="flex items-center gap-2">
+                                <span class="${statusClass}">${statusIcon}</span>
+                                <span class="text-sm font-semibold">R${meal.cost}</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-1 mb-2" style="flex-wrap: wrap;">
+                            ${meal.tags.map(tag => `
+                                <span style="background: #f0f0f0; padding: 0.125rem 0.5rem; border-radius: 12px; font-size: 0.75rem; color: #666;">
+                                    ${tag}
+                                </span>
+                            `).join('')}
+                        </div>
+                        <div class="mb-2">
+                            <p class="text-sm mb-1" style="color: #666;">Ingredients:</p>
+                            <div class="ingredient-list">
+                                ${meal.ingredients.map(ing => `
+                                    <span class="ingredient-tag ${meal.missing.includes(ing) ? 'missing' : 'available'}">
+                                        ${ing}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                        ${meal.missing.length > 0 ? `
+                            <p class="text-sm" style="color: #999;">
+                                Missing: ${meal.missing.join(', ')}
+                            </p>
+                        ` : ''}
+                        <button onclick="addToPlanner('${meal.name}')" 
+                                class="btn btn-primary w-full mt-4">
+                            Add to Weekly Plan
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Add to planner
+        function addToPlanner(mealName) {
+            // Switch to planner tab
+            document.querySelector('[data-tab="planner"]').click();
+            showToast(`${mealName} ready to add to your plan!`);
+        }
+
+        // Render weekly planner
+        function renderWeeklyPlanner() {
+            const container = document.getElementById('weeklyCalendar');
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            
+            container.innerHTML = days.map(day => `
+                <div class="day-planner">
+                    <h3 class="font-semibold mb-2">${day}</h3>
+                    <div class="meal-selects">
+                        <select onchange="updateMealPlan('${day}', 'breakfast', this.value)">
+                            <option value="">Select breakfast...</option>
+                            ${meals.filter(m => m.tags.includes('sweet') || m.name.includes('Pancakes')).map(meal => 
+                                `<option value="${meal.name}" ${weeklyPlan[day]?.breakfast === meal.name ? 'selected' : ''}>${meal.name}</option>`
+                            ).join('')}
+                        </select>
+                        <select onchange="updateMealPlan('${day}', 'lunch', this.value)">
+                            <option value="">Select lunch...</option>
+                            ${meals.map(meal => 
+                                `<option value="${meal.name}" ${weeklyPlan[day]?.lunch === meal.name ? 'selected' : ''}>${meal.name}</option>`
+                            ).join('')}
+                        </select>
+                        <select onchange="updateMealPlan('${day}', 'dinner', this.value)">
+                            <option value="">Select dinner...</option>
+                            ${meals.map(meal => 
+                                `<option value="${meal.name}" ${weeklyPlan[day]?.dinner === meal.name ? 'selected' : ''}>${meal.name}</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update meal plan
+        function updateMealPlan(day, mealType, mealName) {
+            if (!weeklyPlan[day]) weeklyPlan[day] = {};
+            weeklyPlan[day][mealType] = mealName;
+            saveData();
+        }
+
+        // Generate shopping list
+        document.getElementById('generateListBtn').addEventListener('click', generateShoppingList);
+
+        function generateShoppingList() {
+            const allIngredients = Object.values(cupboard).flat();
+            const neededIngredients = new Set();
+            let totalCost = 0;
+
+            // Collect all meal ingredients from weekly plan
+            Object.values(weeklyPlan).forEach(dayMeals => {
+                Object.values(dayMeals).forEach(mealName => {
+                    if (mealName) {
+                        const meal = meals.find(m => m.name === mealName);
+                        if (meal) {
+                            totalCost += meal.cost;
+                            meal.ingredients.forEach(ingredient => {
+                                const hasIngredient = allIngredients.some(userIng => 
+                                    userIng.includes(ingredient.toLowerCase()) || ingredient.toLowerCase().includes(userIng)
+                                );
+                                if (!hasIngredient) {
+                                    neededIngredients.add(ingredient);
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+            const budget = parseInt(document.getElementById('budgetInput').value) || 200;
+            renderShoppingList(Array.from(neededIngredients), totalCost, budget);
+            
+            // Switch to shopping list tab
+            document.querySelector('[data-tab="list"]').click();
+        }
+
+        // Render shopping list
+        function renderShoppingList(ingredients, totalCost, budget) {
+            const container = document.getElementById('shoppingListContent');
+            
+            if (ingredients.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">✅</div>
+                        <p style="color: #4ECDC4; font-weight: 600;">You have everything you need!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const budgetPercent = Math.min((totalCost / budget) * 100, 100);
+            const budgetStatus = totalCost <= budget ? 'within' : 'over';
+            const budgetColor = budgetStatus === 'within' ? '#4ECDC4' : '#FF6B6B';
+
+            container.innerHTML = `
+                <div class="card">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold">Budget Summary</h3>
+                        <span class="text-xl font-bold" style="color: ${budgetColor};">R${totalCost}</span>
+                    </div>
+                    <div class="budget-bar mb-2">
+                        <div class="budget-fill" style="width: ${budgetPercent}%; background: ${budgetColor};"></div>
+                    </div>
+                    <p class="text-sm" style="color: #666;">
+                        Budget: R${budget} • ${budgetStatus === 'within' ? 'Within budget!' : `R${totalCost - budget} over budget`}
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3 class="font-semibold mb-4">🛍️ Shopping List</h3>
+                    <div>
+                        ${ingredients.map(ingredient => `
+                            <label class="shopping-item">
+                                <input type="checkbox" class="checkbox">
+                                <span style="text-transform: capitalize;">${ingredient}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Quick search functionality
+        document.getElementById('quickSearchBtn').addEventListener('click', () => {
+            document.getElementById('quickSearchModal').classList.add('show');
+            quickSearch();
+        });
+
+        document.getElementById('closeQuickSearch').addEventListener('click', () => {
+            document.getElementById('quickSearchModal').classList.remove('show');
+        });
+
+        function quickSearch() {
+            const allIngredients = Object.values(cupboard).flat();
+            const quickResults = meals.filter(meal => {
+                const availableIngredients = meal.ingredients.filter(ing => 
+                    allIngredients.some(userIng => userIng.includes(ing.toLowerCase()) || ing.toLowerCase().includes(userIng))
+                );
+                return availableIngredients.length === meal.ingredients.length;
+            }).slice(0, 3);
+
+            const container = document.getElementById('quickResults');
+            
+            if (quickResults.length === 0) {
+                container.innerHTML = '<p class="text-center" style="color: #666;">No complete meals available</p>';
+                return;
+            }
+
+            container.innerHTML = quickResults.map(meal => `
+                <div style="background: #f8f9fa; border-radius: 8px; padding: 0.75rem; margin-bottom: 0.5rem;">
+                    <div class="flex justify-between items-center">
+                        <span class="font-semibold">${meal.name}</span>
+                        <span style="color: #4ECDC4; font-size: 0.875rem;">✓ Ready</span>
+                    </div>
+                    <p class="text-sm" style="color: #666;">R${meal.cost}</p>
+                </div>
+            `).join('');
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Initialize app
+        renderCupboard();
+        renderWeeklyPlanner();
+
+        // Initial search if ingredients exist
+        setTimeout(() => {
+            if (Object.values(cupboard).flat().length > 0) {
+                searchMeals();
+            }
+        }, 100);
+
+        // Make functions global for onclick handlers
+        window.removeIngredient = removeIngredient;
+        window.addToPlanner = addToPlanner;
+        window.updateMealPlan = updateMealPlan;
+    </script>
+</body>
+</html>
