@@ -674,67 +674,26 @@
 
         // Predefined meals
         const meals = [
+            // Original meals
             {
                 name: "Pap + Chakalaka",
                 ingredients: ["pap", "chakalaka"],
-                tags: ["vegan", "cheap"],
+                tags: ["vegan", "cheap", "sa staple", "hot"],
                 cost: 15,
                 cooking: "stove"
             },
             {
                 name: "Samp & Beans",
                 ingredients: ["samp", "beans", "onion"],
-                tags: ["vegan", "protein"],
+                tags: ["vegan", "protein", "classic"],
                 cost: 20,
                 cooking: "stove"
             },
             {
                 name: "Pancakes",
                 ingredients: ["flour", "eggs", "milk", "oil"],
-                tags: ["sweet", "cheap"],
+                tags: ["sweet", "breakfast"],
                 cost: 18,
-                cooking: "stove"
-            },
-            {
-                name: "Mac & Cheese & Viennas",
-                ingredients: ["macaroni", "cheese sauce", "viennas"],
-                tags: ["meat", "easy"],
-                cost: 25,
-                cooking: "stove"
-            },
-            {
-                name: "Canned Soup + Bread",
-                ingredients: ["soup can", "bread"],
-                tags: ["quick", "no cook"],
-                cost: 12,
-                cooking: "microwave"
-            },
-            {
-                name: "Canned Veg Stir-fry",
-                ingredients: ["mixed veg", "oil", "garlic"],
-                tags: ["vegan"],
-                cost: 16,
-                cooking: "stove"
-            },
-            {
-                name: "Rice + Curry Veg Can",
-                ingredients: ["rice", "canned curry veg"],
-                tags: ["vegan", "easy"],
-                cost: 14,
-                cooking: "stove"
-            },
-            {
-                name: "Toasted Sandwiches",
-                ingredients: ["bread", "cheese"],
-                tags: ["quick"],
-                cost: 10,
-                cooking: "microwave"
-            },
-            {
-                name: "Egg Fried Rice",
-                ingredients: ["rice", "egg", "onion"],
-                tags: ["vegetarian", "1-pan"],
-                cost: 16,
                 cooking: "stove"
             },
             {
@@ -742,6 +701,224 @@
                 ingredients: ["instant noodles"],
                 tags: ["quick", "cheap"],
                 cost: 8,
+                cooking: "microwave"
+            },
+            // Expanded meal list
+            {
+                name: "Mac & Cheese with Viennas",
+                ingredients: ["macaroni", "cheese sauce", "viennas"],
+                tags: ["meat", "quick", "kids"],
+                cost: 25,
+                cooking: "stove"
+            },
+            {
+                name: "Mac & Cheese (No Meat)",
+                ingredients: ["macaroni", "cheese sauce"],
+                tags: ["vegetarian"],
+                cost: 18,
+                cooking: "stove"
+            },
+            {
+                name: "Spaghetti Bolognese",
+                ingredients: ["spaghetti", "mince", "tomato sauce", "onion", "garlic"],
+                tags: ["meat", "classic"],
+                cost: 35,
+                cooking: "stove"
+            },
+            {
+                name: "Lentil Bolognese",
+                ingredients: ["spaghetti", "lentils", "tomato paste", "onion"],
+                tags: ["vegan", "filling"],
+                cost: 22,
+                cooking: "stove"
+            },
+            {
+                name: "Lasagne",
+                ingredients: ["pasta sheets", "mince", "white sauce", "tomato sauce"],
+                tags: ["meat", "hearty"],
+                cost: 45,
+                cooking: "oven"
+            },
+            {
+                name: "Veg Lasagne",
+                ingredients: ["pasta sheets", "mixed veg", "cheese", "white sauce"],
+                tags: ["vegetarian", "budget"],
+                cost: 32,
+                cooking: "oven"
+            },
+            {
+                name: "Stew",
+                ingredients: ["potatoes", "carrots", "onion", "meat", "soup powder"],
+                tags: ["meat", "one-pot"],
+                cost: 38,
+                cooking: "stove"
+            },
+            {
+                name: "Veggie Stew",
+                ingredients: ["canned veg", "potato", "stock cube"],
+                tags: ["vegan", "cheap"],
+                cost: 16,
+                cooking: "stove"
+            },
+            {
+                name: "Toasted Sandwiches",
+                ingredients: ["bread", "cheese", "tomato", "onion"],
+                tags: ["quick", "vegetarian"],
+                cost: 12,
+                cooking: "microwave"
+            },
+            {
+                name: "Tuna Toasties",
+                ingredients: ["bread", "tuna", "cheese", "onion"],
+                tags: ["meat", "quick"],
+                cost: 18,
+                cooking: "microwave"
+            },
+            {
+                name: "Quiche",
+                ingredients: ["eggs", "milk", "flour", "cheese", "spinach", "onion"],
+                tags: ["vegetarian", "oven-bake"],
+                cost: 28,
+                cooking: "oven"
+            },
+            {
+                name: "Mini Pies",
+                ingredients: ["puff pastry", "leftover mince", "peas"],
+                tags: ["meat", "snacks"],
+                cost: 30,
+                cooking: "oven"
+            },
+            {
+                name: "Muffins",
+                ingredients: ["flour", "eggs", "oil", "milk", "sugar", "baking powder"],
+                tags: ["sweet", "baking"],
+                cost: 20,
+                cooking: "oven"
+            },
+            {
+                name: "Cookies",
+                ingredients: ["flour", "butter", "sugar", "egg", "baking soda"],
+                tags: ["sweet", "baking"],
+                cost: 22,
+                cooking: "oven"
+            },
+            {
+                name: "Smash & Gravy",
+                ingredients: ["instant mash", "gravy", "onion"],
+                tags: ["vegetarian", "2-min meal"],
+                cost: 10,
+                cooking: "microwave"
+            },
+            {
+                name: "Pap & Gravy",
+                ingredients: ["maize meal", "tomato sauce", "onion"],
+                tags: ["vegan", "sa staple"],
+                cost: 12,
+                cooking: "stove"
+            },
+            {
+                name: "Pap & Boerewors",
+                ingredients: ["maize meal", "boerewors", "gravy"],
+                tags: ["meat", "classic sa"],
+                cost: 28,
+                cooking: "stove"
+            },
+            {
+                name: "Homemade Pizza",
+                ingredients: ["flour", "yeast", "tomato sauce", "cheese"],
+                tags: ["vegetarian", "fun"],
+                cost: 25,
+                cooking: "oven"
+            },
+            {
+                name: "Meat Pizza",
+                ingredients: ["flour", "yeast", "tomato sauce", "cheese", "mince"],
+                tags: ["meat", "fun"],
+                cost: 35,
+                cooking: "oven"
+            },
+            {
+                name: "Vetkoek & Mince",
+                ingredients: ["flour", "oil", "mince", "onion"],
+                tags: ["meat", "sa special"],
+                cost: 24,
+                cooking: "stove"
+            },
+            {
+                name: "Vetkoek & Jam",
+                ingredients: ["flour", "oil", "jam"],
+                tags: ["sweet", "breakfast"],
+                cost: 15,
+                cooking: "stove"
+            },
+            {
+                name: "Vetkoek & Cheese",
+                ingredients: ["flour", "oil", "cheese"],
+                tags: ["vegetarian", "breakfast"],
+                cost: 18,
+                cooking: "stove"
+            },
+            {
+                name: "Bobotie",
+                ingredients: ["mince", "bread", "milk", "curry powder", "egg"],
+                tags: ["meat", "sa classic"],
+                cost: 32,
+                cooking: "oven"
+            },
+            {
+                name: "Cottage Pie",
+                ingredients: ["mince", "onion", "instant mash", "tomato paste"],
+                tags: ["meat", "hearty"],
+                cost: 30,
+                cooking: "oven"
+            },
+            {
+                name: "French Toast",
+                ingredients: ["bread", "egg", "milk", "cinnamon"],
+                tags: ["sweet", "breakfast"],
+                cost: 14,
+                cooking: "stove"
+            },
+            {
+                name: "Rice & Lentil Curry",
+                ingredients: ["rice", "lentils", "curry powder", "onion"],
+                tags: ["vegan", "filling"],
+                cost: 18,
+                cooking: "stove"
+            },
+            {
+                name: "Rice & Tuna Mayo",
+                ingredients: ["rice", "tuna", "mayo"],
+                tags: ["meat", "cold lunch"],
+                cost: 20,
+                cooking: "microwave"
+            },
+            {
+                name: "Chakalaka Stir-fry",
+                ingredients: ["canned chakalaka", "rice", "onion"],
+                tags: ["vegan", "spicy"],
+                cost: 16,
+                cooking: "stove"
+            },
+            {
+                name: "Fried Cabbage & Pap",
+                ingredients: ["cabbage", "onion", "oil", "pap"],
+                tags: ["vegan", "filling"],
+                cost: 14,
+                cooking: "stove"
+            },
+            {
+                name: "Egg Fried Rice",
+                ingredients: ["rice", "egg", "onion", "garlic"],
+                tags: ["vegetarian", "quick"],
+                cost: 16,
+                cooking: "stove"
+            },
+            {
+                name: "Rice Salad",
+                ingredients: ["rice", "beans", "corn", "peas", "mayo"],
+                tags: ["vegetarian", "cold", "side"],
+                cost: 22,
                 cooking: "microwave"
             }
         ];
@@ -1009,8 +1186,39 @@
             document.querySelector('[data-tab="list"]').click();
         }
 
+        // Ingredient pricing database (estimated South African prices)
+        const ingredientPrices = {
+            // Grains & Starches
+            'pap': 8, 'maize meal': 8, 'rice': 12, 'samp': 15, 'macaroni': 10, 'spaghetti': 12, 
+            'pasta sheets': 18, 'flour': 15, 'bread': 12, 'instant mash': 8, 'instant noodles': 6,
+            'yeast': 5, 'baking powder': 8, 'baking soda': 6,
+            
+            // Proteins
+            'beans': 10, 'sugar beans': 10, 'lentils': 18, 'eggs': 25, 'mince': 45, 'viennas': 15,
+            'tuna': 18, 'leftover mince': 0, 'boerewors': 35, 'meat': 50, 'chicken': 40, 'beef': 55,
+            
+            // Vegetables & Canned
+            'onion': 8, 'garlic': 6, 'tomato': 12, 'carrots': 10, 'potatoes': 15, 'cabbage': 12,
+            'spinach': 8, 'mixed veg': 12, 'canned veg': 12, 'chakalaka': 15, 'canned chakalaka': 15,
+            'tomato sauce': 12, 'tomato paste': 8, 'canned curry veg': 15, 'corn': 8, 'peas': 10,
+            
+            // Dairy & Condiments
+            'milk': 18, 'cheese': 25, 'cheese sauce': 20, 'white sauce': 15, 'butter': 22, 'oil': 15,
+            'mayo': 18, 'gravy': 8, 'soup powder': 6, 'stock cube': 5, 'curry powder': 12,
+            'jam': 18, 'sugar': 12, 'cinnamon': 8, 'salt': 5,
+            
+            // Specialty items
+            'puff pastry': 20, 'soup can': 12
+        };
+
+        // Get ingredient price with fallback
+        function getIngredientPrice(ingredient) {
+            const normalizedIngredient = ingredient.toLowerCase();
+            return ingredientPrices[normalizedIngredient] || 15; // Default price R15
+        }
+
         // Render shopping list
-        function renderShoppingList(ingredients, totalCost, budget) {
+        function renderShoppingList(ingredients, totalMealCost, budget) {
             const container = document.getElementById('shoppingListContent');
             
             if (ingredients.length === 0) {
@@ -1023,33 +1231,79 @@
                 return;
             }
 
-            const budgetPercent = Math.min((totalCost / budget) * 100, 100);
-            const budgetStatus = totalCost <= budget ? 'within' : 'over';
+            // Calculate shopping costs
+            const ingredientsWithPrices = ingredients.map(ingredient => ({
+                name: ingredient,
+                price: getIngredientPrice(ingredient)
+            }));
+
+            const shoppingTotal = ingredientsWithPrices.reduce((sum, item) => sum + item.price, 0);
+            const grandTotal = totalMealCost + shoppingTotal;
+            
+            const budgetPercent = Math.min((grandTotal / budget) * 100, 100);
+            const budgetStatus = grandTotal <= budget ? 'within' : 'over';
             const budgetColor = budgetStatus === 'within' ? '#4ECDC4' : '#FF6B6B';
 
             container.innerHTML = `
                 <div class="card">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-semibold">Budget Summary</h3>
-                        <span class="text-xl font-bold" style="color: ${budgetColor};">R${totalCost}</span>
+                    <h3 class="font-semibold mb-4">💰 Budget Breakdown</h3>
+                    
+                    <div class="mb-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm">Weekly Meals:</span>
+                            <span class="font-semibold">R${totalMealCost}</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm">Shopping Needed:</span>
+                            <span class="font-semibold" id="shoppingCost">R${shoppingTotal}</span>
+                        </div>
+                        <hr style="margin: 0.5rem 0; border-color: #e5e5e5;">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="font-semibold">Total Cost:</span>
+                            <span class="text-xl font-bold" style="color: ${budgetColor};" id="totalCost">R${grandTotal}</span>
+                        </div>
                     </div>
+                    
                     <div class="budget-bar mb-2">
-                        <div class="budget-fill" style="width: ${budgetPercent}%; background: ${budgetColor};"></div>
+                        <div class="budget-fill" id="budgetBar" style="width: ${budgetPercent}%; background: ${budgetColor};"></div>
                     </div>
-                    <p class="text-sm" style="color: #666;">
-                        Budget: R${budget} • ${budgetStatus === 'within' ? 'Within budget!' : `R${totalCost - budget} over budget`}
-                    </p>
+                    <div class="flex justify-between items-center text-sm" style="color: #666;">
+                        <span>Budget: R${budget}</span>
+                        <span id="budgetStatus">
+                            ${budgetStatus === 'within' ? 
+                                `R${budget - grandTotal} remaining` : 
+                                `R${grandTotal - budget} over budget`
+                            }
+                        </span>
+                    </div>
+                    
+                    <div class="mt-4 p-3" style="background: #f8f9fa; border-radius: 8px;">
+                        <div class="flex justify-between items-center text-sm">
+                            <span>Items bought:</span>
+                            <span id="progressText">0 of ${ingredients.length}</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="card">
                     <h3 class="font-semibold mb-4">🛍️ Shopping List</h3>
-                    <div>
-                        ${ingredients.map(ingredient => `
-                            <label class="shopping-item">
-                                <input type="checkbox" class="checkbox">
-                                <span style="text-transform: capitalize;">${ingredient}</span>
+                    <div id="shoppingItems">
+                        ${ingredientsWithPrices.map((item, index) => `
+                            <label class="shopping-item" style="justify-content: space-between;">
+                                <div class="flex items-center gap-3">
+                                    <input type="checkbox" class="checkbox" onchange="updateShoppingProgress()" data-price="${item.price}">
+                                    <span style="text-transform: capitalize;">${item.name}</span>
+                                </div>
+                                <span class="font-semibold" style="color: #666;">R${item.price}</span>
                             </label>
                         `).join('')}
+                    </div>
+                    
+                    <div class="mt-4 pt-3" style="border-top: 1px solid #e5e5e5;">
+                        <div class="flex justify-between items-center">
+                            <span class="font-semibold">Shopping Total:</span>
+                            <span class="font-bold" id="remainingShoppingCost" style="color: #5D5CDE;">R${shoppingTotal}</span>
+                        </div>
                     </div>
                 </div>
             `;
@@ -1115,10 +1369,78 @@
             }
         }, 100);
 
+        // Update shopping progress
+        function updateShoppingProgress() {
+            const checkboxes = document.querySelectorAll('#shoppingItems input[type="checkbox"]');
+            const checkedBoxes = document.querySelectorAll('#shoppingItems input[type="checkbox"]:checked');
+            
+            // Update progress text
+            const progressText = document.getElementById('progressText');
+            if (progressText) {
+                progressText.textContent = `${checkedBoxes.length} of ${checkboxes.length}`;
+            }
+            
+            // Calculate remaining shopping cost
+            let remainingCost = 0;
+            checkboxes.forEach(checkbox => {
+                if (!checkbox.checked) {
+                    remainingCost += parseInt(checkbox.dataset.price);
+                }
+            });
+            
+            // Update remaining shopping cost
+            const remainingShoppingCost = document.getElementById('remainingShoppingCost');
+            if (remainingShoppingCost) {
+                remainingShoppingCost.textContent = `R${remainingCost}`;
+            }
+            
+            // Update shopping cost in budget breakdown
+            const shoppingCost = document.getElementById('shoppingCost');
+            if (shoppingCost) {
+                shoppingCost.textContent = `R${remainingCost}`;
+            }
+            
+            // Update total cost and budget status
+            const totalCostElement = document.getElementById('totalCost');
+            const budgetBar = document.getElementById('budgetBar');
+            const budgetStatus = document.getElementById('budgetStatus');
+            
+            if (totalCostElement && budgetBar && budgetStatus) {
+                // Get current meal cost (from the breakdown)
+                const mealCostText = document.querySelector('.card .flex.justify-between .font-semibold').textContent;
+                const mealCost = parseInt(mealCostText.replace('R', ''));
+                
+                const newTotal = mealCost + remainingCost;
+                const budget = parseInt(document.getElementById('budgetInput').value) || 200;
+                
+                // Update total cost
+                const isWithinBudget = newTotal <= budget;
+                const budgetColor = isWithinBudget ? '#4ECDC4' : '#FF6B6B';
+                totalCostElement.textContent = `R${newTotal}`;
+                totalCostElement.style.color = budgetColor;
+                
+                // Update budget bar
+                const budgetPercent = Math.min((newTotal / budget) * 100, 100);
+                budgetBar.style.width = `${budgetPercent}%`;
+                budgetBar.style.background = budgetColor;
+                
+                // Update budget status text
+                budgetStatus.textContent = isWithinBudget ? 
+                    `R${budget - newTotal} remaining` : 
+                    `R${newTotal - budget} over budget`;
+            }
+            
+            // Show completion message if all items checked
+            if (checkedBoxes.length === checkboxes.length && checkboxes.length > 0) {
+                showToast('🎉 Shopping complete! All items purchased.');
+            }
+        }
+
         // Make functions global for onclick handlers
         window.removeIngredient = removeIngredient;
         window.addToPlanner = addToPlanner;
         window.updateMealPlan = updateMealPlan;
+        window.updateShoppingProgress = updateShoppingProgress;
     </script>
 </body>
 </html>
